@@ -1,0 +1,13 @@
+from rest_framework import serializers
+from .models import Product, Category, Supplier
+
+
+class CategorySerializer(serializers.HyperlinkedModelSerializer):
+    def __repr__(self):
+        return "categories"
+
+    class Meta:
+        model = Category
+        fields = [
+            'id', 'name', 'description'
+        ]

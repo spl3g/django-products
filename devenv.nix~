@@ -1,0 +1,28 @@
+{ pkgs, ... }:
+
+{
+  packages = with pkgs; [
+    nodePackages.pyright
+  ];
+
+  languages.python = {
+    enable = true;
+    venv = {
+      enable = true;
+      requirements = ./requirements.txt;
+    };
+  };
+
+  services.postgres = {
+    enable = true;
+    initialDatabases = [
+      { name = "django"; }
+      { name = "library_db"; }
+    ];
+  };
+
+  pre-commit.hooks = {
+    black.enable = true;
+    flake8.enable = true;
+  };
+}

@@ -1,0 +1,38 @@
+from django.shortcuts import render
+
+def check_auth(view: Callable) -> Callable:
+    def new_view(request):
+        if not (request.user and request.user.is_authenticated):
+            return redirect('unauthorized')
+        return view(request)
+    return new_view
+
+def home_page(request):
+    return render(
+        request,
+        'index.html',
+        context={
+            'books': Book.objects.count(),
+            'genres': Genre.objects.count(),
+            'authors': Author.objects.count(),
+        }
+    )
+
+def create_listview(model_class, template, plural_name):
+    class View(LoginRequiredMixin, ListView):
+        model = model_class
+        template_name = template
+        paginate_by = 10
+        context_object_name = plural_name
+
+        def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+            context = super().get_context_data(**kwargs)
+            instances = model_class.objects.all()
+            paginator = Paginator(instances, 10)
+            page = self.request.GET.get('page')
+            page_obj = paginator.get_page(page)
+            context[f'{plural_name}_list'] = page_obj
+            return context
+    return View
+
+ProductListView = create_listview()
