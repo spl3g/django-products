@@ -1,14 +1,19 @@
 from django.forms import Form, CharField, DecimalField
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import Supplier
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.utils.translation import gettext_lazy as _
+
+REGISTER_CHAR_LEN = 100
 
 
-class SupplierRegistrationForm(UserCreationForm):
-    name = CharField(max_length=REGISTER_CHAR_LEN, required=True)
-    phone = CharField(max_length=REGISTER_CHAR_LEN, required=True)
+def validate_username(value):
+    if User.objects.filter(username=value).exists():
+        raise ValidationError(f'The username "{value}" is already in use.')
+
+
+class RegistrationForm(UserCreationForm):
+    username = CharField(max_length=150, validators=[validate_username])
 
     class Meta:
-        model = Supplier
-        fields = ['Username', 'Name', 'Phone', 'Password', 'Repeat password']
+        model = User
+        fields = ["username", "password1", "password2"]

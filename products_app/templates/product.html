@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}{{product.name}}{% endblock %}
+
+
+
+{% block content %}
+<div class="container mx-auto p-8">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold mb-4">Product Details</h1>
+        <p class="text-lg"><strong>Name:</strong> {{ product.name }}</p>
+        <p class="text-lg"><strong>Price:</strong> ${{ product.price }}</p>
+        <p class="text-lg"><strong>Category:</strong> {{ product.category_id.name }}</p>
+        
+        <div class="mt-6">
+            {% if product.suppliers.all %}
+            <h2 class="text-xl font-semibold mb-2">Suppliers</h2>
+            <ul class="list-disc list-inside">
+                {% for supplier in product.suppliers.all %}
+                <li class="text-lg">
+		  <a href="{% url 'supplier' supplier.id %}">{{ supplier.name }}</a>
+		</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-lg text-gray-500">No suppliers</p>
+            {% endif %}
+        </div>
+        
+        <div class="mt-6">
+            {% if product.reviews.all %}
+            <h2 class="text-xl font-semibold mb-2">Reviews</h2>
+            <ul class="space-y-4">
+                {% for review in product.reviews.all %}
+                <li class="p-4 bg-gray-50 rounded-lg">
+                    <p class="text-lg font-bold">{{ review.name }}</p>
+                    <p class="text-sm text-yellow-500">Rating: {{ review.rating }}</p>
+                    <p class="text-gray-700">{{ review.text }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-lg text-gray-500">No reviews</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

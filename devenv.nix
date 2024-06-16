@@ -20,9 +20,4 @@
       { name = "psrdb"; }
     ];
   };
-
-  pre-commit.hooks = {
-    black.enable = true;
-    flake8.enable = true;
-  };
 }

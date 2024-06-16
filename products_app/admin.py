@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import Product, Review, Supplier, ProductSupplier, Category, ProductCategory
+from .models import (
+    Product,
+    Review,
+    Supplier,
+    ProductSupplier,
+    Category,
+    ProductCategory,
+)
 
 
 class ProductSupplierInline(admin.TabularInline):

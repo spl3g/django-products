@@ -17,19 +17,28 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
-from products_app.views import ProductViewSet, SupplierViewSet, ReviewViewSet, CategoryViewSet
+from products_app.views import (
+    ProductViewSet,
+    SupplierViewSet,
+    ReviewViewSet,
+    CategoryViewSet,
+)
+
 from rest_framework import routers
-# from rest_framework.authtoken.views import obtain_auth_token
+
+from rest_framework.authtoken.views import obtain_auth_token
 
 router = routers.DefaultRouter()
-router.register(r'products', ProductViewSet)
-router.register(r'suppliers', SupplierViewSet)
-router.register(r'reviews', ReviewViewSet)
-router.register(r'categories', CategoryViewSet)
+router.register(r"products", ProductViewSet)
+router.register(r"suppliers", SupplierViewSet)
+router.register(r"reviews", ReviewViewSet)
+router.register(r"categories", CategoryViewSet)
 
 
 urlpatterns = [
+    path("", include('products_app.urls')),
     path("admin/", admin.site.urls),
-    path('api/v1/', include(router.urls)),
-    # path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path("api/v1/", include(router.urls)),
+    path('api-auth/', obtain_auth_token, name='api__auth'),
 ]
+

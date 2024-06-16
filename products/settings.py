@@ -29,7 +29,7 @@ SECRET_KEY = "django-insecure-a#pvxh!%od+icq*rqs&+grda+eaev9mq%0f$hok_@ykp*mb)81
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['testserver', '127.0.0.1']
+ALLOWED_HOSTS = ["testserver", "127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -37,7 +37,7 @@ ALLOWED_HOSTS = ['testserver', '127.0.0.1']
 INSTALLED_APPS = [
     "products_app",
     "rest_framework",
-    # "rest_framework.authtoken",
+    "rest_framework.authtoken",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -79,15 +79,15 @@ WSGI_APPLICATION = "products.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-if getenv('DEBUG') == True:
+if getenv("DEBUG"):
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            'NAME': getenv('PG_DBNAME'),
-            'USER': getenv('PG_USER'),
-            'PASSWORD': getenv('PG_PASSWORD'),
-            'HOST': getenv('PG_HOST'),
-            'PORT': getenv('PG_PORT'),
+            "NAME": getenv("PG_DBNAME"),
+            "USER": getenv("PG_USER"),
+            "PASSWORD": getenv("PG_PASSWORD"),
+            "HOST": getenv("PG_HOST"),
+            "PORT": getenv("PG_PORT"),
         }
     }
 else:
@@ -96,8 +96,8 @@ else:
             "ENGINE": "django.db.backends.postgresql",
             "NAME": "psrdb",
             "HOST": "localhost",
-            }
         }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -140,14 +140,15 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': [
-#         'rest_framework.permissions.IsAuthenticated',
-#     ],
-#     'DEFAULT_AUTHENTICATION_CLASSES': [
-#         'rest_framework.authentication.TokenAuthentication',
-#     ],
-#     'DEFAULT_RENDERER_CLASSES': [
-#         'rest_framework.renderers.JSONRenderer',
-#     ],
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Account{% endblock %}
+{% block content %}
+<div class="container mx-auto p-8">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold mb-4">{{ user.username }}'s Profile</h1>
+        
+        <div class="mt-6">
+            {% if user.supplier.all %}
+                <h2 class="text-xl font-semibold mb-2">Supplier</h2>
+                <a href="{% url 'supplier' user.supplier.first.id %}">
+		  <p>{{ user.supplier.first }}</p>
+		</a>
+            {% else %}
+                <p class="text-lg text-gray-500">No registered supplier</p>
+		<button class="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 ease-in-out">
+                  Register Supplier
+		</button>
+            {% endif %}
+        </div>
+        <div class="mt-6">
+            {% if user.product.all %}
+                <h2 class="text-xl font-semibold mb-2">Products</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {% for product in user.product.all %}
+                        <div class="block p-4 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-300 ease-in-out">
+                            <h2 class="text-lg font-semibold">{{ product.name }}</h2>
+                            <p class="text-gray-600">${{ product.price }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-lg text-gray-500">No products</p>
+            {% endif %}
+            <button class="mt-4 p-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300 ease-in-out">
+                Add a Product
+            </button>
+        </div>
+        <div class="mt-6">
+            {% if user.review.all %}
+                <h2 class="text-xl font-semibold mb-2">Reviews</h2>
+                <ul class="list-disc list-inside">
+                    {% for review in user.review.all %}
+                        <li class="mb-2">{{ review.name }} - Rating: {{ review.rating }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-lg text-gray-500">No reviews</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
