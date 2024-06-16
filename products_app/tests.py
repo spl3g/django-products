@@ -58,6 +58,7 @@ class CategoryAPITest(APITestCase):
 
 
 class ProductAPITest(APITestCase):
+    category_url = "/api/v1/categories/"
     url = "/api/v1/products/"
 
     _user_creds = {
@@ -77,8 +78,17 @@ class ProductAPITest(APITestCase):
         self.superuser_token = Token(user=self.superuser)
         self.client.force_authenticate(user=self.user, token=self.token)
 
+    def create_category(self):
+        self.client.force_authenticate(
+            user=self.superuser, token=self.superuser_token)
+        data = {"name": "Test Category", "description": "Test description"}
+        response = self.client.post(self.category_url, data, format="json")
+        self.client.force_authenticate(user=self.user, token=self.token)
+        return response
+
     def create_product(self):
-        data = {"name": "Test Product", "price": 10.00}
+        category = self.create_category().json()["id"]
+        data = {"name": "Test Product", "price": 10.00, "category_id": (category,)}
         response = self.client.post(self.url, data, format="json")
         return response
 
@@ -97,9 +107,10 @@ class ProductAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_update_product(self):
+        category_id = self.create_category().json()["id"]
         response = self.create_product()
         product_id = response.json()["id"]
-        data = {"name": "Updated Product", "price": 20.00}
+        data = {"name": "Updated Product", "price": 20.00, "category_id": (category_id,)}
         response = self.client.put(
             self.url + product_id + "/", data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
