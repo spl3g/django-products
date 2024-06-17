@@ -13,35 +13,19 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8==3.9.0
+        pip install flake8 wemake-python-styleguide
     - name: Flake8
       run: flake8 products/ products_app/
   tests:
     name: Tests
     runs-on: ubuntu-latest
     
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_DB: products_db
-          POSTGRES_PASSWORD: changed
-          POSTGRES_USER: prod
-        ports:
-          - 38746:5432
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
     - uses: actions/checkout@v2
     - name: Install Python
       uses: actions/setup-python@v2
       env:
-          POSTGRES_DB: products_db
+          POSTGRES_DB: postgres
           POSTGRES_PASSWORD: changed
           POSTGRES_USER: prod
           POSTGRES_HOST: 127.0.0.1
@@ -55,4 +39,5 @@ jobs:
         pip install -r requirements.txt
     - name: Tests
       run: |
+        ./manage.py migrate
         ./manage.py test
