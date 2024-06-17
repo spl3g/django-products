@@ -80,7 +80,7 @@ WSGI_APPLICATION = "products.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-if getenv("DEBUG"):
+if not getenv("DEBUG"):
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
