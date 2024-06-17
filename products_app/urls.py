@@ -1,3 +1,5 @@
+"""App urls."""
+
 from django.contrib.auth.views import LoginView
 from django.urls import include, path, reverse_lazy
 

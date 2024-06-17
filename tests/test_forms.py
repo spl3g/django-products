@@ -2,6 +2,7 @@
 
 from django.contrib.auth.models import User
 from django.test import TestCase
+
 from products_app.forms import (RegistrationForm, ReviewCreationForm,
                                 SupplierRegistrationForm)
 
@@ -13,8 +14,10 @@ PHONE = 'phone'
 
 
 class FormTests(TestCase):
+    """Test cases for form validations."""
 
     def test_registration_form_valid(self):
+        """Test valid registration form."""
         form_data = {
             USERNAME: 'newuser',
             'password1': PSWD,
@@ -24,6 +27,7 @@ class FormTests(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_registration_form_invalid_username(self):
+        """Test registration form with existing username."""
         User.objects.create_user(username='existinguser', password=PSWD)
         form_data = {
             USERNAME: 'existinguser',
@@ -36,6 +40,7 @@ class FormTests(TestCase):
         self.assertEqual(form.errors[USERNAME], ['A user with that username already exists.'])
 
     def test_registration_form_password_mismatch(self):
+        """Test registration form with password mismatch."""
         form_data = {
             USERNAME: 'newuser',
             'password1': PSWD,
@@ -46,6 +51,7 @@ class FormTests(TestCase):
         self.assertIn(PSWD2, form.errors)
 
     def test_review_creation_form_valid(self):
+        """Test valid review creation form."""
         form_data = {
             'text': 'This is a review',
             'rating': 5,
@@ -55,6 +61,7 @@ class FormTests(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_review_creation_form_invalid(self):
+        """Test invalid review creation form."""
         form_data = {
             'text': '',
             'rating': '',
@@ -65,6 +72,7 @@ class FormTests(TestCase):
         self.assertIn('rating', form.errors)
 
     def test_supplier_registration_form_valid(self):
+        """Test valid supplier registration form."""
         form_data = {
             NAME: 'Supplier Name',
             PHONE: '1234567890',
@@ -73,6 +81,7 @@ class FormTests(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_supplier_registration_form_invalid(self):
+        """Test invalid supplier registration form."""
         form_data = {
             NAME: '',
             PHONE: '',
