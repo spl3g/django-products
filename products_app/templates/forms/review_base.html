@@ -1,0 +1,28 @@
+{% extends 'forms/base_form.html' %}
+
+{% block form %}
+<div class="mb-4">
+  <label for="{{ form.rating.id_for_label }}" class="block text-gray-700">{{ form.rating.label_tag }}</label>
+  <input type="number" min="0" max="5" name="{{ form.rating.name }}" id="{{ form.rating.id_for_label }}" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300">
+  {% for error in form.rating.errors %}
+  <p class="text-red-500 text-xs italic">{{ error }}</p>
+  {% endfor %}
+</div>
+<div class="mb-4">
+  <label for="{{ form.text.id_for_label }}" class="block text-gray-700">{{ form.text.label_tag }}</label>
+  <input type="text" name="{{ form.text.name }}" id="{{ form.text.id_for_label }}" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300">
+  {% for error in form.text.errors %}
+  <p class="text-red-500 text-xs italic">{{ error }}</p>
+  {% endfor %}
+</div>
+
+{% if request.GET.product %}
+<input type="hidden" id="product_id" name="product_id" value="{{request.GET.product}}"/>
+{% else %}
+<input type="hidden" id="product_id" name="product_id" value="{{review.product_id.id}}"/>
+{% endif %}
+<div class="mb-4">
+  <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring">Register</button>
+  <input type="hidden" name="next" value="{{ next }}">
+</div>
+{% endblock %}

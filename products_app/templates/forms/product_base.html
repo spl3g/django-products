@@ -1,0 +1,28 @@
+{% extends 'forms/base_form.html' %}
+
+{% block title %}Register Product{% endblock %}
+{% block form %}
+    {{form.errors}}
+    <div class="mb-4">
+	<label for="{{ form.name.id_for_label }}" class="block text-gray-700">{{ form.name.label_tag }}</label>
+	<input type="text" name="{{ form.name.name }}" id="{{ form.name.id_for_label }}" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300">
+	{% for error in form.name.errors %}
+	<p class="text-red-500 text-xs italic">{{ error }}</p>
+	{% endfor %}
+	<label for="{{ form.category.id_for_label }}" class="block text-gray-700">{{ form.category.label_tag }}</label>
+	<select name="{{ form.category.name }}" id="{{ form.category.id_for_label }}" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300">
+	    {% for choice in form.category.field.choices %}
+	    <option value="{{choice.0}}">
+		{{choice.1}}
+	    </option>
+	    {% endfor %}
+	</select>
+	<label for="{{ form.price.id_for_label }}" class="block text-gray-700">{{ form.price.label_tag }}</label>
+	<input type="number" name="{{form.price.name}}" id="{{ form.price.id_for_label }}" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300" min="0">
+	{% for error in form.price.errors %}
+	<p class="text-red-500 text-xs italic">{{ error }}</p>
+	{% endfor %}
+    </div>
+    <input name="supplier" id="supplier" type="hidden" value="{{request.user.supplier.id}}"/>
+    <input type="submit" value="Create">
+{% endblock %}

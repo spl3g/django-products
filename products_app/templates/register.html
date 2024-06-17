@@ -62,8 +62,7 @@
                 document.getElementById('message').textContent = 'Регистрация прошла успешно!';
                 document.getElementById('message').classList.remove('error-message');
                 document.getElementById('message').classList.add('success-message');
-                document.getElementById('token').textContent = 'Ваш токен: ' + data.token;
-                document.getElementById('token').classList.add('success-message');
+		windown.location.replace("{% url 'categories' %}")
                 
                 localStorage.setItem('token', data.token);
             }).catch((error) => {

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Registration{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-6">Register</h2>
+
+    {% if form.errors %}
+      <div class="mb-4 text-red-500">
+        <p>Your passwords didn't match. Please try again.</p>
+      </div>
+    {% endif %}
+
+    {% if next %}
+      <div class="mb-4">
+        {% if user.is_authenticated %}
+          <p class="text-red-500">Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
+        {% else %}
+          <p class="text-red-500">Please login to see this page.</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'register' %}">
+      {% csrf_token %}
+
+      <div class="mb-4">
+        <label for="{{ form.username.id_for_label }}" class="block text-gray-700">{{ form.username.label_tag }}</label>
+        <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300">
+        {% for error in form.username.errors %}
+          <p class="text-red-500 text-xs italic">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="mb-4">
+        <label for="{{ form.password1.id_for_label }}" class="block text-gray-700">{{ form.password1.label_tag }}</label>
+        <input type="password" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300">
+        {% for error in form.password1.errors %}
+          <p class="text-red-500 text-xs italic">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="mb-4">
+        <label for="{{ form.password2.id_for_label }}" class="block text-gray-700">{{ form.password2.label_tag }}</label>
+        <input type="password" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300">
+        {% for error in form.password2.errors %}
+          <p class="text-red-500 text-xs italic">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="mb-4">
+        <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring">Register</button>
+        <input type="hidden" name="next" value="{{ next }}">
+      </div>
+    </form>
+
+    <div class="flex justify-between">
+      <p>If you already have an account</p>
+      <a href="{% url 'login' %}" class="text-blue-500 hover:underline">Login</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
